@@ -75,7 +75,7 @@ const MapChart = (props: WorldMapProps) => {
     <>
     <ComposableMap projection="geoAlbersUsa">
       <Geographies geography={geoUrl}>
-        {({ geographies, outline, borders }) => (
+        {({ outline, borders }: {outline: string, borders: string}) => (
           <>
             <Geography geography={outline} fill="#E9E3DA" />
             <Geography geography={borders} fill="none" stroke="#FFF" />
