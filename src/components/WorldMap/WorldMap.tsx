@@ -1,5 +1,4 @@
 import React, { useMemo, useEffect, useState } from "react";
-import { geoCentroid } from "d3-geo";
 import {
   ComposableMap,
   Geographies,
@@ -11,10 +10,7 @@ import styles from "./styles.module.css";
 
 import allStates from "./allstates.json";
 
-const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
-
-const X_LOWER_BOUND = -125, X_UPPER_BOUND = -68;
-const Y_LOWER_BOUND = 25, Y_UPPER_BOUND = 80;
+const geoUrl = "https://raw.githubusercontent.com/Cincome/tx.geojson/master/counties/tx_counties.topojson";
 
 // TODO: Allow this to be fetched from an api, or maybe google sheet
 interface InputMarker {
@@ -73,14 +69,22 @@ const MapChart = (props: WorldMapProps) => {
 
   return (
     <>
-    <ComposableMap projection="geoAlbersUsa">
+    <ComposableMap
+      projection="geoAlbers"
+      projectionConfig={{
+        center: [1, 29],
+        scale: 2200,
+      }}
+    >
       <Geographies geography={geoUrl}>
-        {({ outline, borders }: {outline: string, borders: string}) => (
-          <>
-            <Geography geography={outline} fill="#E9E3DA" />
-            <Geography geography={borders} fill="none" stroke="#FFF" />
-          </>
-        )}
+        {({ geographies, outline, borders }: {geographies: string, outline: string, borders: string}) => {
+          return (
+            <>
+              <Geography geography={outline} fill="#E9E3DA" />
+              <Geography geography={borders} fill="none" stroke="#FFF" />
+            </>
+          );
+        }}
       </Geographies>
       {markersToUse.map((marker, index) => (
         <Marker
